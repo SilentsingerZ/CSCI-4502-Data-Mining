@@ -1,7 +1,5 @@
 ## Climate change since 1750
-### Yonghao Zhang      
-### Xinyi Zhang
-### Kaixin Chen
+### Yonghao Zhang, Xinyi Zhang and Kaixin Chen
 #### Dataset Links
 ##### https://www.kaggle.com/cobraimovic/d/berkeleyearth/climate-change-earth-surface-temperature-data/climate-change
 #### Project Links
