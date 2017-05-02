@@ -13,8 +13,9 @@ Matlab:<br>
 Graph generation<br>
 WEKA:<br>
 Classification/clustering<br>
-# Dataset Links<br>
+# Dataset Link<br>
 https://www.kaggle.com/cobraimovic/d/berkeleyearth/climate-change-earth-surface-temperature-data/climate-change<br>
+# Description video Link<br>
 # Project Links<br>
 https://www.sharelatex.com/project/58b9bc0b10ddc44d6721a335<br>
 
