@@ -5,11 +5,16 @@ Yonghao Zhang, Xinyi Zhang and Kaixin Chen<br>
 # Description of Project<br>
 In this project, we will examine the trend of climate change since 1750 and the relationship between climage change trend and latitude, seasonality, etc.<br>
 # Summary of the questions:<br>
-
+Is Global Warming a fact or fiction? 
+Is temperature rising a global phenomenon or it only happens in the certain area? 
+What is the relationship between the climate change and altitude?
+What is the relationship between the seasonality and climate trend?
+What is the relationship between the highs and lows trend and climate trend?
 # Application of knowledge<br>
 MySQL:<br>
 Data Processing/cleaning and Data warehousing<br>
 Matlab:<br>
+R:<br>
 Graph generation<br>
 WEKA:<br>
 Classification/clustering<br>
