@@ -11,16 +11,20 @@ What is the relationship between the climate change and altitude?<br>
 What is the relationship between the seasonality and climate trend?<br>
 What is the relationship between the highs and lows trend and climate trend?<br>
 # Application of knowledge<br>
-MySQL:<br>
-Data Processing/cleaning and Data warehousing<br>
-Matlab:<br>
-R:<br>
+Data Processing/cleaning and Data warehousing:<br>
+MySQL: major processing and analysising tools<br>
 Graph generation<br>
-WEKA:<br>
-Classification/clustering<br>
+Matlab: major plotting tools<br>
+R: plot graphs on maps<br>
+Classification/clustering:<br>
+WEKA<br>
 # Dataset Link<br>
 https://www.kaggle.com/cobraimovic/d/berkeleyearth/climate-change-earth-surface-temperature-data/climate-change<br>
 # Description video Link<br>
+https://www.screencast.com/t/EvkbYuPo<br>
+(Explaining Matlab code)
+https://www.screencast.com/t/FkCyTZCWJWj<br>
+(Explaining other stuffs)
 # Project Links<br>
 https://www.sharelatex.com/project/58b9bc0b10ddc44d6721a335<br>
 
