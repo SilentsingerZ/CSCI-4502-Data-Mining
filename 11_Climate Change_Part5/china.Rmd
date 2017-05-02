@@ -1,0 +1,136 @@
+---
+CSCI 4502 Project
+Climate Change since 1750
+Xinyi Zhang
+March 29, 2017
+This code plot temperature of the China in 1950, and 2013.
+---
+Loading the necessarily package and input dataset:
+```{r, message=FALSE,warning=FALSE}
+
+library(data.table)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(choroplethr)
+library(choroplethrMaps)
+library(choroplethrAdmin1)
+
+df <- fread("../input/GlobalLandTemperaturesByState.csv",showProgress =  FALSE)
+
+```
+
+Formatting the dataset and selecting the columns we are gonna use:
+```{r}
+df_China<-na.omit(df)
+df_China <- df_China %>%
+  filter(Country=="China") %>%
+  separate(col = dt, into = c("Year", "Month", "Day"), convert = TRUE) 
+df_China2 <- df_China %>% 
+              select(Year,AverageTemperature,State) %>%
+              group_by(Year,State) %>%
+              dplyr:: summarise(value=mean(AverageTemperature))
+```
+
+Average temperatures in China for the year 1950:
+Modified the names of Chinese province as these names in the admin1choropleth package are differnet than the names in our dataset.
+```{r}
+colnames(df_China2)[2]<- "region"
+df_China2$region<-tolower(df_China2$region)
+df_China1950 <- df_China2 %>%
+             filter(Year==1950) 
+df_China1950 <- df_China1950[,2:3]
+
+df_China1950$region <- paste(df_China1950$region , "sheng", sep=" ")
+df_China1950$region[2] <- paste("beijing shi")
+df_China1950$region[3] <- paste("chongqing shi")
+df_China1950$region[7] <- paste("guangxi zhuangzu zizhiqu")
+df_China1950$region[19] <- paste("inner mongolia autonomous region")
+df_China1950$region[20] <- paste("ningxia huizu zizhiqu")
+df_China1950$region[22] <- paste("shaanxi")
+df_China1950$region[24] <- paste("shanghai shi")
+df_China1950$region[27] <- paste("tianjin shi")
+df_China1950$region[28] <- paste("xinjiang uygur zizhiqu")
+df_China1950$region[29] <- paste("tibet autonomous region")
+
+admin1_choropleth(country.name = "china", df_China1950, title = "Average Temperatures in China (1950)")
+```
+
+Average temperatures in China for the year 2013:
+```{r}
+df_China2013 <- df_China2 %>%
+             filter(Year==2013) 
+df_China2013 <- df_China2013[,2:3]
+
+df_China2013$region <- paste( df_China2013$region , "sheng", sep=" ")
+df_China2013$region[2] <- paste("beijing shi")
+df_China2013$region[3] <- paste("chongqing shi")
+df_China2013$region[7] <- paste("guangxi zhuangzu zizhiqu")
+df_China2013$region[19] <- paste("inner mongolia autonomous region")
+df_China2013$region[20] <- paste("ningxia huizu zizhiqu")
+df_China2013$region[22] <- paste("shaanxi")
+df_China2013$region[24] <- paste("shanghai shi")
+df_China2013$region[27] <- paste("tianjin shi")
+df_China2013$region[28] <- paste("xinjiang uygur zizhiqu")
+df_China2013$region[29] <- paste("tibet autonomous region")
+
+admin1_choropleth(country.name = "china", df_China2013,title = "Average Temperatures in China (2013)")
+```
+
+Average temperature increase in China between 1950 and 2013:
+```{r, message=FALSE,warning=FALSE}
+diff_1950_2013 <- as.data.frame(df_China2013$value-df_China1950$value)
+diff_1950_2013<- cbind(df_China2013$region, diff_1950_2013)
+colnames(diff_1950_2013)[1]<- "region"
+colnames(diff_1950_2013)[2]<- "value"
+admin1_choropleth(country.name = "china", diff_1950_2013,title = "Average Temperature Increase in China (1950-2013)")
+```
+
+Average temperature in the upper part of China from 1950 to 2013
+Pick "Nei Mongu", "Gansu", and "Qinghai" as examples for the upper parts of China. 
+```{r, message=FALSE,warning=FALSE}
+
+df_China_Inner <- df_China %>% 
+              filter(State=="Nei Mongol" | State =="Gansu" | State =="Qinghai" ) %>%
+              filter(Year>1950) %>%
+              group_by(Year,State)%>%
+              dplyr:: summarise(AverageTemperature=mean(AverageTemperature))
+
+ggplot(df_China_Inner, aes(x=Year, y=AverageTemperature)) +
+               geom_point(color='red') +
+               facet_wrap(~ State)+
+               geom_smooth()
+```
+
+Average temperature in the middle part of China from 1950 to 2013
+Pick "Chongqing", "Hubei", and "Yunnan" as examples for the upper parts of China.
+```{r, message=FALSE,warning=FALSE}
+
+df_China_Middle <- df_China %>% 
+              filter(State=="Chongqing" | State =="Hubei" | State =="Yunnan" ) %>%
+              filter(Year>1950) %>%
+              group_by(Year,State)%>%
+              dplyr:: summarise(AverageTemperature=mean(AverageTemperature))
+
+ggplot(df_China_Middle, aes(x=Year, y=AverageTemperature)) +
+               geom_point(color='red') +
+               facet_wrap(~ State)+
+               geom_smooth()
+```
+
+Average temperature in the coastal part of China from 1950 to 2013
+Pick "Guangdong", "Fujian", and "Guangxi" as examples for the upper parts of China. 
+```{r, message=FALSE,warning=FALSE}
+
+df_China_Coastal <- df_China %>% 
+              filter(State=="Guangdong" | State =="Fujian" | State =="Guangxi" ) %>%
+              filter(Year>1950) %>%
+              group_by(Year,State)%>%
+              dplyr:: summarise(AverageTemperature=mean(AverageTemperature))
+
+ggplot(df_China_Coastal, aes(x=Year, y=AverageTemperature)) +
+               geom_point(color='red') +
+               facet_wrap(~ State)+
+               geom_smooth()
+
+```

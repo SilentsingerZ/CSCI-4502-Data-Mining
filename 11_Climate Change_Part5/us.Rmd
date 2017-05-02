@@ -1,0 +1,91 @@
+---
+CSCI 4502 Project
+Climate Change since 1750
+Xinyi Zhang
+March 29, 2017
+This code plot temperature of the United States in 1850, 1980, and 2013.
+---
+Loading the necessarily package and input dataset:
+```{r, message=FALSE,warning=FALSE}
+
+library(data.table)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(choroplethr)
+library(choroplethrMaps)
+library(choroplethrAdmin1)
+
+df <- fread("GlobalLandTemperaturesByState.csv",showProgress =  FALSE)
+
+```
+
+Formatting the dataset and selecting the columns we are gonna use:
+Change the name of "Georgia (State)" into "Georgia" as the package has different name of Georgia state than the dataset has
+```{r}
+df_United_States<-na.omit(df)
+df_United_States <- df_United_States %>%
+  filter(Country=="United States") %>%
+  separate(col = dt, into = c("Year", "Month", "Day"), convert = TRUE) 
+
+df_United_States$State <- as.character(df_United_States$State)
+df_United_States$State[df_United_States$State=="Georgia (State)"] <- "Georgia"
+df_United_States$State<- as.factor(df_United_States$State) 
+
+
+df_United_States2 <- df_United_States %>% 
+              select(Year,AverageTemperature,State) %>%
+              group_by(Year,State) %>%
+              dplyr:: summarise(value=mean(AverageTemperature))
+```
+
+1850 representing the developing time after the immigration period
+Average temperatures in the United States in 1850:
+```{r}
+colnames(df_United_States2)[2]<- "region"
+df_United_States2$region<-tolower(df_United_States2$region)
+df_United_States1850 <- df_United_States2 %>%
+             filter(Year==1850) 
+df_United_States1850 <- df_United_States1850[,2:3]
+
+state_choropleth(df_United_States1850,
+                 title= "Average Temperatures of United States in 1850", 
+                 legend="Temperature Range")
+```
+
+Average temperatures in the United States in 1980:
+```{r}
+colnames(df_United_States2)[2]<- "region"
+df_United_States2$region<-tolower(df_United_States2$region)
+df_United_States1980 <- df_United_States2 %>%
+             filter(Year==1980) 
+df_United_States1980 <- df_United_States1980[,2:3]
+
+state_choropleth(df_United_States1980,
+                 title= "Average Temperatures of United States in 1980", 
+                 legend="Temperature Range")
+```
+
+Average temperatures in the United States in 2013:
+```{r}
+colnames(df_United_States2)[2]<- "region"
+df_United_States2$region<-tolower(df_United_States2$region)
+df_United_States2013 <- df_United_States2 %>%
+             filter(Year==2013) 
+df_United_States2013 <- df_United_States2013[,2:3]
+
+state_choropleth(df_United_States2013,
+                 title= "Average Temperatures of United States in 2013", 
+                 legend="Temperature Range")
+```
+
+Compare the average temperature between 1850 and 2013:
+```{r, message=FALSE,warning=FALSE}
+diff_1850_2013 <- as.data.frame(df_United_States2013$value-df_United_States1850$value)
+diff_1850_2013<- cbind(df_United_States2013$region, diff_1850_2013)
+colnames(diff_1850_2013)[1]<- "region"
+colnames(diff_1850_2013)[2]<- "value"
+state_choropleth(diff_1850_2013,
+                 title= "Average Temperature Change of United States from 1949 to 2013", 
+                 legend="Changes")
+```
